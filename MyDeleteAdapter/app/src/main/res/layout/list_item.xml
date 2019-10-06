@@ -3,8 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:layout_marginBottom="1dp"
     android:scrollbars="none"
-    android:id="@+id/main_item_layout"
-    android:descendantFocusability="blocksDescendants">
+    android:id="@+id/main_item_layout">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">

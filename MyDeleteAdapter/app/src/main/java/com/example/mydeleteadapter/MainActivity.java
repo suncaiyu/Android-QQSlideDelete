@@ -3,7 +3,11 @@ package com.example.mydeleteadapter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.mydeleteadapter.Adapter.MyAdapter;
 

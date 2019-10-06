@@ -47,9 +47,11 @@ public class MyScrollView extends HorizontalScrollView {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if(changed)
-        btn = findViewById(R.id.myDelete);
-        btn_width = btn.getWidth();
+        if(changed) {
+
+            btn = findViewById(R.id.myDelete);
+            btn_width = btn.getWidth();
+        }
     }
 
     @Override
@@ -58,7 +60,7 @@ public class MyScrollView extends HorizontalScrollView {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 changeScrollx();            //根据滑动距离判断是否显示删除按钮
-                return true;
+                return false;
             default:
                 break;
         }

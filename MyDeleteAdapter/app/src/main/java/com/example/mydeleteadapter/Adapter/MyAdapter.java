@@ -29,6 +29,8 @@ public class MyAdapter extends BaseAdapter {
     private int btn_width;
     private View nowView = null;
     private View preView = null;
+    private float downx=0;
+    private float upx=0;
 
 
     //图标数组
@@ -61,14 +63,16 @@ public class MyAdapter extends BaseAdapter {
     private List<Integer> infolist = new ArrayList<Integer>();
 
     ViewHolder holder;
-    public MyAdapter(Context context){
+
+    public MyAdapter(Context context) {
         mContext = context;
-        for(int i =0;i<names.length;i++){
+        for (int i = 0; i < names.length; i++) {
             namelist.add(names[i]);
             infolist.add(infos[i]);
             iconlist.add(icons[i]);
         }
     }
+
     @Override
     public int getCount() {
         return namelist.size();
@@ -87,8 +91,8 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View view, final ViewGroup viewGroup) {
         holder = null;
-        if(view == null){
-            view = (View) LayoutInflater.from(mContext).inflate(R.layout.list_item, viewGroup,false);
+        if (view == null) {
+            view = (View) LayoutInflater.from(mContext).inflate(R.layout.list_item, viewGroup, false);
             holder = new ViewHolder();
             holder.info = view.findViewById(R.id.Myinfo);
             holder.name = view.findViewById(R.id.name);
@@ -98,27 +102,63 @@ public class MyAdapter extends BaseAdapter {
             holder.sv = view.findViewById(R.id.main_item_layout);
             WindowManager wm = (WindowManager) mContext
                     .getSystemService(Context.WINDOW_SERVICE);
-            holder.l.getLayoutParams().width =wm.getDefaultDisplay().getWidth();
+            holder.l.getLayoutParams().width = wm.getDefaultDisplay().getWidth();
             view.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) view.getTag();
         }
         final View finalView = view;
         holder.sv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View vi, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                    Log.i("Furrain","sss");
-                    if(nowView == null){
-                        preView = null;
-                    }else{
-                        preView = nowView;
-                    }
-                    if(nowView == vi){
-                        return false;
-                    }
-                    nowView = vi;
-                    autoHide();
+//                if(motionEvent.getAction() == MotionEvent.ACTION_MOVE){
+//                    if(nowView == null){
+//                        preView = null;
+//                    }else{
+//                        preView = nowView;
+//                    }
+//                    if(nowView == vi){
+//                        return false;
+//                    }
+//                    nowView = vi;
+//                    autoHide();
+//                    return true;
+//                }
+//                else if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+//                    autoHide();
+//                    TextView t = vi.findViewById(R.id.name);
+//                    Log.i("Furrain", (String) t.getText());
+//                    return true;
+//                }
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        downx =  motionEvent.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        upx =motionEvent.getX();
+                        float modify = downx - upx;
+                        if (modify == 0) {
+                            preView = nowView;
+                            nowView = vi;
+                            autoHide1();
+                            TextView t = vi.findViewById(R.id.name);
+                            Log.i("Furrain", (String) t.getText());
+                            return false;
+                        } else {
+                            if (nowView == null) {
+                                preView = null;
+                            } else {
+                                preView = nowView;
+                            }
+                            if (nowView == vi) {
+                                return false;
+                            }
+                            nowView = vi;
+                            autoHide();
+                            return false;
+                        }
                 }
                 return false;
             }
@@ -135,21 +175,33 @@ public class MyAdapter extends BaseAdapter {
 
                 infolist.remove(i);
                 iconlist.remove(i);
+                v.scrollTo(0, 0);
                 notifyDataSetChanged();
             }
         });
-        view.scrollTo(0,0);
+
         return view;
     }
 
     private void autoHide() {
-        if(preView != null){
-            MyScrollView v = (MyScrollView)preView;
-            v.smoothScrollTo(0,0);
+        if (preView != null) {
+            MyScrollView v = (MyScrollView) preView;
+            v.smoothScrollTo(0, 0);
         }
     }
 
-    class ViewHolder{
+    private void autoHide1() {
+        if (preView != null) {
+            MyScrollView v = (MyScrollView) preView;
+            v.smoothScrollTo(0, 0);
+        }
+        if (nowView != null) {
+            MyScrollView v = (MyScrollView) nowView;
+            v.smoothScrollTo(0, 0);
+        }
+    }
+
+    class ViewHolder {
         TextView name;
         TextView info;
         ImageView touxiang;
